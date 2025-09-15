@@ -1,10 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { FiBell } from "react-icons/fi"; // React Icons bell
 import { NavLink } from "react-router";
+import { AuthContext } from "../../Context/AuthContext";
 
-const Navbar = ({ user, onLogout }) => {
+const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
+  const {  user,logOut } = useContext(AuthContext)
+
+  const handleLogout = () => {
+    logOut()
+      .then(() => {
+        alert('you logged out')
+      }).catch((error) => {
+        console.log(error.message)
+      });
+  }
 
   const link = (
     <>
@@ -36,31 +47,30 @@ const Navbar = ({ user, onLogout }) => {
           <FiBell className="h-6 w-6" />
         </button>
 
-        {!user ? (
-          // Not logged in: Join Us button
-          <NavLink to="auth/login" className="btn btn-sm btn-primary">
-            Join Us
-          </NavLink>
-        ) : (
-          // Logged in: Profile Picture
-          <div className="relative">
+        { user ? (
+          // When logged in
+          <div className="relative flex items-center gap-4">
             <img
-              src={user.avatar || "/default-avatar.png"}
+              src={user.photoURL || "/default-avatar.png"}
               alt="profile"
-              className="w-10 h-10 rounded-full cursor-pointer"
+              title={user.displayName || user.name || "User"}
+              className="w-10 h-10 rounded-full border-2 cursor-pointer"
               onClick={() => setDropdownOpen(!dropdownOpen)}
             />
             {dropdownOpen && (
-              <ul className="absolute right-0 mt-2 w-48 bg-base-100 border rounded-lg shadow-lg z-50 p-2 menu">
-                <li className="px-4 py-2 font-semibold">{user.name}</li>
+              <ul className="absolute right-0 top-12 w-48 bg-base-100 border rounded-lg shadow-lg z-50 p-2 menu">
+                <li className="px-4 py-2 font-semibold">{user.displayName || user.name}</li>
                 <li>
-                  <NavLink to="/dashboard" className="px-4 py-2 hover:bg-green-100 rounded">
+                  <NavLink
+                    to="/dashboard"
+                    className="px-4 py-2 hover:bg-green-100 rounded block"
+                  >
                     Dashboard
                   </NavLink>
                 </li>
                 <li>
                   <button
-                    onClick={onLogout}
+                    onClick={handleLogout}
                     className="px-4 py-2 hover:bg-red-100 text-red-600 rounded w-full text-left"
                   >
                     Logout
@@ -69,7 +79,13 @@ const Navbar = ({ user, onLogout }) => {
               </ul>
             )}
           </div>
+        ) : (
+          // When not logged in → show Join Us
+          <NavLink to="/auth/login" className="btn btn-sm btn-primary">
+            Join Us
+          </NavLink>
         )}
+
       </div>
     </div>
   );
