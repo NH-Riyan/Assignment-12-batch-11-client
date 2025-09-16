@@ -12,10 +12,12 @@ const queryClient = new QueryClient();
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <div className='w-10/12 mx-auto min-h-screen'>
   <QueryClientProvider client={queryClient}>
         <AuthProvider>
           <RouterProvider router={router} />
         </AuthProvider>
       </QueryClientProvider>
+      </div>
   </StrictMode>
 );
