@@ -1,26 +1,42 @@
 import React, { useContext, useState } from "react";
-
-import { FiBell } from "react-icons/fi"; // React Icons bell
+import { useQuery } from "@tanstack/react-query";
+import { FiBell } from "react-icons/fi";
 import { NavLink } from "react-router";
 import { AuthContext } from "../../Context/AuthContext";
+import useAxios from "../Hooks/useAxios";
 
 const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const {  user,logOut } = useContext(AuthContext)
+  const { user, logOut } = useContext(AuthContext);
+  const axiosInstance = useAxios();
+
+  // Fetch announcements from backend
+  const { data: announcements = [] } = useQuery({
+    queryKey: ["announcements"],
+    queryFn: async () => {
+      const res = await axiosInstance.get("/announcements");
+      return res.data;
+    },
+  });
 
   const handleLogout = () => {
     logOut()
       .then(() => {
-        alert('you logged out')
-      }).catch((error) => {
-        console.log(error.message)
+        alert("you logged out");
+      })
+      .catch((error) => {
+        console.log(error.message);
       });
-  }
+  };
 
   const link = (
     <>
-      <NavLink to="/" className="hover:text-green-600">Home</NavLink>
-      <NavLink to="/membership" className="hover:text-green-600">Membership</NavLink>
+      <NavLink to="/" className="hover:text-green-600">
+        Home
+      </NavLink>
+      <NavLink to="/membership" className="hover:text-green-600">
+        Membership
+      </NavLink>
     </>
   );
 
@@ -35,19 +51,24 @@ const Navbar = () => {
 
       {/* Center: Links */}
       <div className="navbar-center hidden lg:flex">
-        <ul className="menu menu-horizontal px-1 gap-5 text-lg">
-          {link}
-        </ul>
+        <ul className="menu menu-horizontal px-1 gap-5 text-lg">{link}</ul>
       </div>
 
       {/* Right Side: Notification / Join / Profile */}
       <div className="navbar-end flex items-center gap-4">
-        {/* Notification Icon */}
-        <button className="btn btn-ghost btn-circle">
-          <FiBell className="h-6 w-6" />
-        </button>
+        {/* Notification Icon with Count */}
+        <div className="relative">
+          <button className="btn btn-ghost btn-circle">
+            <FiBell className="h-6 w-6" />
+          </button>
+          {announcements.length > 0 && (
+            <span className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold px-2 py-0.5 rounded-full">
+              {announcements.length}
+            </span>
+          )}
+        </div>
 
-        { user ? (
+        {user ? (
           // When logged in
           <div className="relative flex items-center gap-4">
             <img
@@ -59,7 +80,9 @@ const Navbar = () => {
             />
             {dropdownOpen && (
               <ul className="absolute right-0 top-12 w-48 bg-base-100 border rounded-lg shadow-lg z-50 p-2 menu">
-                <li className="px-4 py-2 font-semibold">{user.displayName || user.name}</li>
+                <li className="px-4 py-2 font-semibold">
+                  {user.displayName || user.name}
+                </li>
                 <li>
                   <NavLink
                     to="/dashboard"
@@ -85,7 +108,6 @@ const Navbar = () => {
             Join Us
           </NavLink>
         )}
-
       </div>
     </div>
   );

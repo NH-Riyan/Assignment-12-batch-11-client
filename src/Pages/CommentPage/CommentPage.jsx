@@ -12,7 +12,7 @@ const feedbackOptions = [
 ];
 
 const CommentPage = () => {
-const axiosInstance=useAxios();
+  const axiosInstance = useAxios();
   const { id } = useParams();
   const queryClient = useQueryClient();
   const [selectedFeedback, setSelectedFeedback] = useState({});
@@ -28,6 +28,22 @@ const axiosInstance=useAxios();
 
   const reportMutation = useMutation({
     mutationFn: async ({ commentIndex, feedback }) => {
+      const comment = comments[commentIndex];
+
+      // Construct the report object
+      const reportData = {
+        postId: id,
+        postTitle: post.title,
+        commenterEmail: comment.commenterEmail,
+        commentText: comment.commentText,
+        feedback,
+        reportedAt: new Date().toISOString(),
+      };
+
+      // Send report to backend
+      await axiosInstance.post("/reports", reportData);
+
+      // Also update the post’s comment as reported
       await axiosInstance.put(`/posts/reportComment/${id}`, {
         commentIndex,
         feedback,
@@ -42,10 +58,10 @@ const axiosInstance=useAxios();
     },
   });
 
+
   if (isLoading) return <p>Loading comments...</p>;
 
   const comments = post?.Comment || [];
-  console.log(post)
 
   return (
     <div className="p-6 bg-gray-50 min-h-screen">
@@ -106,9 +122,8 @@ const axiosInstance=useAxios();
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                     <button
-                      className={`btn btn-sm ${
-                        comment.reported ? "btn-disabled" : "bg-red-500"
-                      }`}
+                      className={`btn btn-sm ${comment.reported ? "btn-disabled" : "bg-red-500"
+                        }`}
                       disabled={isReportDisabled}
                       onClick={() =>
                         reportMutation.mutate({

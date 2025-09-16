@@ -40,7 +40,7 @@ const MyPost = () => {
     if (isLoading) return <p>Loading...</p>;
 
     return (
-        <div className="p-6">
+        <div className="p-6 bg-white">
             <h2 className="text-2xl font-bold mb-4">My Posts</h2>
 
             {

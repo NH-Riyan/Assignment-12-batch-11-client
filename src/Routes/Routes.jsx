@@ -8,6 +8,7 @@ import DashboardLayout from "../Layouts/DashboardLayout";
 import AddPost from "../Pages/AddPost/AddPost";
 import MyPost from "../Pages/MyPost/MyPost";
 import CommentPage from "../Pages/CommentPage/CommentPage";
+import AddAnnouncements from "../Pages/AddAnnouncements/AddAnnouncement";
 
 export const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ export const router = createBrowserRouter([
         path: 'addpost',
         element: <AddPost></AddPost>
       },
+      {
+        path:'announcements',
+        element:<AddAnnouncements></AddAnnouncements>
+      }
 
     ]
   }
