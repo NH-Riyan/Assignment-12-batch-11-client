@@ -40,22 +40,9 @@ const AddPost = () => {
             tag: selectedTag?.value || "general",
             upVote: 0,
             downVote: 0,
-            Comment: [ // <-- array of objects, not a string
-                {
-                    commentId: "c1",
-                    commenterEmail: "student1@example.com",
-                    commentText: "This is very important, we need free education.",
-                    feedback: "",
-                    reported: false
-                },
-                {
-                    commentId: "c2",
-                    commenterEmail: "student2@example.com",
-                    commentText: "I totally agree with this post!",
-                    feedback: "",
-                    reported: false
-                }
-            ],
+            Comment: [ ],
+            like:[],
+            dislike:[],
             createdAt: new Date().toISOString(),
         };
 

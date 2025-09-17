@@ -81,7 +81,7 @@ const Navbar = () => {
             {dropdownOpen && (
               <ul className="absolute right-0 top-12 w-48 bg-base-100 border rounded-lg shadow-lg z-50 p-2 menu">
                 <li className="px-4 py-2 font-semibold">
-                  {user.displayName || user.name}
+                  {user.displayName || user.email}
                 </li>
                 <li>
                   <NavLink
