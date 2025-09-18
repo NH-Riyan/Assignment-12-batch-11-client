@@ -19,7 +19,6 @@ const CommentPage = () => {
   const [selectedFeedback, setSelectedFeedback] = useState({});
   const { user } = useContext(AuthContext);
 
-  // Fetch the post including its comments
   const { data: post, isLoading } = useQuery({
     queryKey: ["post", id],
     queryFn: async () => {
@@ -29,21 +28,25 @@ const CommentPage = () => {
   });
 
   const reportMutation = useMutation({
-    mutationFn: async ({ commentIndex, feedback }) => {
-      const comment = comments[commentIndex];
+    mutationFn: async ({ commentId, feedback }) => {
+      const comment = post.Comment.find((c) => c._id === commentId);
 
       const reportData = {
         postId: id,
         postTitle: post.title,
+        commentId: comment._id,
         commenterEmail: comment.commenterEmail,
         commentText: comment.commentText,
         feedback,
+        solved:false,
         reportedAt: new Date().toISOString(),
       };
 
+
       await axiosInstance.post("/reports", reportData);
+
       await axiosInstance.put(`/posts/reportComment/${id}`, {
-        commentIndex,
+        commentId,
         feedback,
       });
     },
@@ -55,7 +58,6 @@ const CommentPage = () => {
       toast.error("Failed to report comment!");
     },
   });
-
 
   if (isLoading) return <p>Loading comments...</p>;
 
@@ -84,15 +86,14 @@ const CommentPage = () => {
             </tr>
           </thead>
           <tbody className="divide-y divide-gray-200">
-            {comments
-              .filter((comment) => comment.commenterEmail !== user.email) 
+            {comments.filter((comment) => comment.commenterEmail !== user.email)
               .map((comment, idx) => {
                 const isReportDisabled =
-                  !selectedFeedback[idx] || comment.reported;
+                  !selectedFeedback[comment._id] || comment.reported;
 
                 return (
                   <tr
-                    key={idx}
+                    key={comment._id}
                     className={idx % 2 === 0 ? "bg-white" : "bg-gray-50"}
                   >
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
@@ -103,11 +104,11 @@ const CommentPage = () => {
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
                       <select
-                        value={selectedFeedback[idx] || ""}
+                        value={selectedFeedback[comment._id]}
                         onChange={(e) =>
                           setSelectedFeedback((prev) => ({
                             ...prev,
-                            [idx]: e.target.value,
+                            [comment._id]: e.target.value,
                           }))
                         }
                         className="select select-bordered w-full max-w-xs"
@@ -127,8 +128,8 @@ const CommentPage = () => {
                         disabled={isReportDisabled}
                         onClick={() =>
                           reportMutation.mutate({
-                            commentIndex: idx,
-                            feedback: selectedFeedback[idx],
+                            commentId: comment._id,
+                            feedback: selectedFeedback[comment._id],
                           })
                         }
                       >
@@ -139,7 +140,6 @@ const CommentPage = () => {
                 );
               })}
           </tbody>
-
         </table>
       </div>
     </div>

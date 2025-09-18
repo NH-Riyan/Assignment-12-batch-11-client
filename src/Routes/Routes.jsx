@@ -10,6 +10,7 @@ import MyPost from "../Pages/MyPost/MyPost";
 import CommentPage from "../Pages/CommentPage/CommentPage";
 import AddAnnouncements from "../Pages/AddAnnouncements/AddAnnouncement";
 import PostDetails from "../Pages/PostDetails/PostDetails";
+import Reports from "../Pages/Reports/Reports";
 
 export const router = createBrowserRouter([
   {
@@ -59,6 +60,10 @@ export const router = createBrowserRouter([
       {
         path:'announcements',
         element:<AddAnnouncements></AddAnnouncements>
+      },
+      {
+        path:'reports',
+        element:<Reports></Reports>
       }
 
     ]

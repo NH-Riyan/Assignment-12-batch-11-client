@@ -53,6 +53,16 @@ const DashboardLayout = () => {
                 Make Announcements
               </NavLink>
             </li>
+            <li>
+              <NavLink
+                to="/dashboard/reports"
+                className={({ isActive }) =>
+                  isActive ? "bg-primary text-white p-2 rounded" : "p-2 rounded"
+                }
+              >
+                Reports
+              </NavLink>
+            </li>
           </ul>
         </aside>
 
