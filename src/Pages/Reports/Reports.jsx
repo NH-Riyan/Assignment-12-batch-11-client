@@ -1,13 +1,13 @@
 import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import useAxios from "../../Components/Hooks/useAxios";
 import { toast } from "react-toastify";
+import useAxiosSecure from "../../Components/Hooks/useAxiosSecure";
 
 const Reports = () => {
-    const axiosInstance = useAxios();
+    const axiosInstance = useAxiosSecure();
     const queryClient = useQueryClient();
 
-    // Fetch reports
+    
     const { data: reports, isLoading } = useQuery({
         queryKey: ["reports"],
         queryFn: async () => {
@@ -16,10 +16,10 @@ const Reports = () => {
         },
     });
 
-    // Mutation to solve report & increment warning
+    
     const giveWarningMutation = useMutation({
         mutationFn: async (report) => {
-            // Mark report as solved
+        
             await axiosInstance.put(`/reports/solve/${report._id}`);
             // Increment user's warning
             await axiosInstance.put(`/users/incrementWarning/${report.commenterEmail}`);

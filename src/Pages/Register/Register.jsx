@@ -23,7 +23,6 @@ const Register = () => {
 
         let uploadedImageUrl = "";
 
-        // ✅ Upload image to ImgBB
         if (image && image[0]) {
           const formData = new FormData();
           formData.append("image", image[0]);

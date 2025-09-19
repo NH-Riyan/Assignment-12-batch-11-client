@@ -5,12 +5,12 @@ import { useNavigate } from "react-router";
 import { AuthContext } from "../../Context/AuthContext";
 import { useContext } from "react";
 import { toast } from "react-toastify";
-import useAxios from "../../Components/Hooks/useAxios";
+import useAxiosSecure from "../../Components/Hooks/useAxiosSecure";
 
 const MyPost = () => {
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
-    const axiosInstance = useAxios();
+    const axiosInstance = useAxiosSecure();
     const queryClient = useQueryClient();
 
 

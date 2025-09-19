@@ -1,5 +1,6 @@
 import { NavLink, Outlet } from "react-router";
 import Navbar from "../Components/Navbar/Navbar";
+import Footer from "../Components/Footer/Footer";
 
 const DashboardLayout = () => {
   return (
@@ -71,6 +72,7 @@ const DashboardLayout = () => {
           <Outlet /> {/* Nested routes render here */}
         </main>
       </div>
+      <Footer></Footer>
     </div>
   );
 };

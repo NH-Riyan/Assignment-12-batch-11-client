@@ -2,8 +2,8 @@ import { useContext, useState } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { useParams } from "react-router";
 import { toast } from "react-toastify";
-import useAxios from "../../Components/Hooks/useAxios";
 import { AuthContext } from "../../Context/AuthContext";
+import useAxiosSecure from "../../Components/Hooks/useAxiosSecure";
 
 
 const feedbackOptions = [
@@ -13,7 +13,7 @@ const feedbackOptions = [
 ];
 
 const CommentPage = () => {
-  const axiosInstance = useAxios();
+  const axiosInstance = useAxiosSecure();
   const { id } = useParams();
   const queryClient = useQueryClient();
   const [selectedFeedback, setSelectedFeedback] = useState({});

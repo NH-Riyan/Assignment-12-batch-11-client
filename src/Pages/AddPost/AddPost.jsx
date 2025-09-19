@@ -2,15 +2,15 @@ import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 //import { useNavigate } from "react-router";
 import { AuthContext } from "../../Context/AuthContext";
-import useAxios from "../../Components/Hooks/useAxios";
 import { toast } from "react-toastify";
 import Select from "react-select";
 import { useQuery } from "@tanstack/react-query";
+import useAxiosSecure from "../../Components/Hooks/useAxiosSecure";
 
 const AddPost = () => {
     const { register, handleSubmit, reset } = useForm();
     const { user } = useContext(AuthContext);
-    const axiosInstance = useAxios();
+    const axiosInstance = useAxiosSecure();
     // const navigate = useNavigate();
 
     const [selectedTag, setSelectedTag] = useState(null);

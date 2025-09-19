@@ -1,14 +1,13 @@
 import React, { useContext, useState } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AuthContext } from "../../Context/AuthContext";
-import useAxios from "../../Components/Hooks/useAxios";
-
 import { useParams } from "react-router";
 import { FaThumbsUp, FaThumbsDown, FaShareAlt, FaComment } from "react-icons/fa";
+import useAxiosSecure from "../../Components/Hooks/useAxiosSecure";
 
 const PostDetails = () => {
     const { id } = useParams();
-    const axiosInstance = useAxios();
+    const axiosInstance = useAxiosSecure();
     const queryClient = useQueryClient();
     const [commentText, setCommentText] = useState("");
     const [showCommentBox, setShowCommentBox] = useState(false); // toggle state
@@ -69,9 +68,9 @@ const PostDetails = () => {
         <div className="max-w-3xl mx-auto p-6 bg-white rounded shadow-md">
         
             <div className="flex items-center gap-4 mb-4">
-                <img src={post.authorImage} alt={post.authorName} className="w-12 h-12 rounded-full" />
+                <img src={post.authorImage} alt={post.authorName} className="w-10 h-10 rounded-full" />
                 <div>
-                    <h2 className="text-xl font-bold">{post.authorName}</h2>
+                    <h2 className="text-lg font-bold">{post.authorName}</h2>
                     <p className="text-gray-500 text-sm">{new Date(post.createdAt).toLocaleString()}</p>
                 </div>
             </div>

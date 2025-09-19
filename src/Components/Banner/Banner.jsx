@@ -1,19 +1,21 @@
 import React, { useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { FiSearch } from "react-icons/fi";
+import { Link } from "react-router";
+import useAxios from "../Hooks/useAxios";
 
 const Banner = () => {
- const [query, setQuery] = useState("");
+  const [query, setQuery] = useState("");
   const [searchTag, setSearchTag] = useState("");
+  const axiosInstance = useAxios();
 
-  // TanStack Query using object syntax
   const { isPending, error, data: results = [] } = useQuery({
     queryKey: ["searchPosts", searchTag],
-    // queryFn: () =>
-    //   fetch(`http://localhost:5000/api/posts/search?tag=${searchTag}`).then((res) =>
-    //     res.json()
-    //   ),
-    enabled: !!searchTag, // only fetch when searchTag is not empty
+    queryFn: async () => {
+      const res = await axiosInstance.get(`/api/posts/search?tag=${searchTag}`);
+      return res.data;
+    },
+    enabled: !!searchTag,
   });
 
   const handleSearch = (e) => {
@@ -22,11 +24,16 @@ const Banner = () => {
   };
 
   return (
-    <section className="bg-green-100 py-12 px-4 text-center">
-      <h1 className="text-4xl lg:text-5xl font-bold mb-4">
-        Welcome to <span className="text-green-600 italic">CivicTalk</span>
+    <section className="bg-gradient-to-r from-green-50 via-green-100 to-green-50 py-16 px-6 text-center">
+      {/* Title */}
+      <h1 className="text-4xl lg:text-5xl font-extrabold mb-4 text-gray-800">
+        Welcome to{" "}
+        <span className="text-green-600 italic drop-shadow-sm">CivicTalk</span>
       </h1>
-      <p className="text-lg mb-8">Find posts and discussions based on your interests!</p>
+      <p className="text-lg text-gray-600 mb-10 max-w-2xl mx-auto">
+        Find engaging posts and discussions tailored to your interests. Start
+        exploring by searching with tags below!
+      </p>
 
       {/* Search Bar */}
       <form
@@ -38,11 +45,11 @@ const Banner = () => {
           placeholder="Search by tags..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="input input-bordered input-lg w-full rounded-r-none focus:outline-green-500"
+          className="input input-bordered input-lg w-full rounded-l-lg border-green-400 focus:ring-2 focus:ring-green-500 focus:outline-none"
         />
         <button
           type="submit"
-          className="btn btn-lg btn-green rounded-l-none flex items-center gap-2"
+          className="btn btn-lg bg-green-600 hover:bg-green-700 text-white rounded-r-lg flex items-center gap-2 shadow-md transition"
         >
           <FiSearch className="w-5 h-5" />
           Search
@@ -50,27 +57,58 @@ const Banner = () => {
       </form>
 
       {/* Search Results */}
-      <div className="p-4 max-w-4xl mx-auto mt-8">
-        {isPending && <p className="text-center">Loading...</p>}
-        {error && <p className="text-center text-red-500">Error fetching posts</p>}
+      <div className="p-6 max-w-4xl mx-auto mt-10">
+        {error && (
+          <p className="text-center text-red-500 font-medium">
+            Error fetching posts
+          </p>
+        )}
         {!isPending && !error && results.length === 0 && searchTag && (
           <p className="text-center text-gray-500">No posts found</p>
         )}
+
         {!isPending && results.length > 0 && (
-          <ul className="space-y-4">
+          <ul className="space-y-5">
             {results.map((post) => (
               <li
                 key={post._id}
-                className="border p-4 rounded-lg shadow-sm hover:shadow-md transition"
+                className="border border-gray-200 p-6 rounded-xl shadow-sm hover:shadow-lg bg-white text-left transition duration-200"
               >
-                <h2 className="text-xl font-semibold mb-2">{post.title}</h2>
-                <p className="text-gray-700">{post.content.substring(0, 100)}...</p>
-                <p className="text-sm text-gray-400 mt-1">
-                  Tags: {post.tags.join(", ")}
-                </p>
+                <Link to={`/posts/${post._id}`}>
+                  {/* Author Info Above Title */}
+                  <div className="flex items-center gap-3 mb-3">
+                    <img
+                      src={post.authorImage}
+                      alt={post.authorName}
+                      className="w-10 h-10 rounded-full border border-gray-200 object-cover"
+                    />
+                    <span className="text-sm font-medium text-gray-700">
+                      {post.authorName}
+                    </span>
+                  </div>
+
+                  {/* Title */}
+                  <h2 className="text-2xl font-semibold mb-3 text-gray-800 hover:text-green-600 transition">
+                    {post.title}
+                  </h2>
+
+                  {/* Description */}
+                  <p className="text-gray-600 mb-3">
+                    {post.description?.substring(0, 120)}...
+                  </p>
+
+                  {/* Tag */}
+                  <p className="text-sm font-medium text-green-700">
+                    🏷️ Tag:{" "}
+                    <span className="bg-green-100 px-2 py-1 rounded-md text-green-800">
+                      {post.tag}
+                    </span>
+                  </p>
+                </Link>
               </li>
             ))}
           </ul>
+
         )}
       </div>
     </section>
