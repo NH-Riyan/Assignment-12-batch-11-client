@@ -11,6 +11,7 @@ import CommentPage from "../Pages/CommentPage/CommentPage";
 import AddAnnouncements from "../Pages/AddAnnouncements/AddAnnouncement";
 import PostDetails from "../Pages/PostDetails/PostDetails";
 import Reports from "../Pages/Reports/Reports";
+import PrivateRoutes from "../Components/PrivateRoutes/PrivateRoutes";
 
 export const router = createBrowserRouter([
   {
@@ -23,7 +24,7 @@ export const router = createBrowserRouter([
       },
       {
         path:'/posts/:id',
-        element:<PostDetails></PostDetails>
+        element:<PrivateRoutes><PostDetails></PostDetails></PrivateRoutes>
       }
     ]
   },
@@ -43,7 +44,7 @@ export const router = createBrowserRouter([
   },
   {
     path: '/dashboard',
-    element: <DashboardLayout></DashboardLayout>,
+    element: <PrivateRoutes><DashboardLayout></DashboardLayout></PrivateRoutes>,
     children: [
       {
         path: 'myposts',

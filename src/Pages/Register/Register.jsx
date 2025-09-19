@@ -41,7 +41,7 @@ const Register = () => {
           }
         }
 
-        // ✅ Update Firebase profile
+
         try {
           await updateUserProfile({
             displayName: name,
@@ -52,12 +52,13 @@ const Register = () => {
           console.error("Error updating Firebase profile:", err);
         }
 
-        // ✅ Save to backend
+        
         const userData = {
           name,
           email,
           photoURL: uploadedImageUrl,
           badge: "bronze",
+          role:"user",
           postNumber: 0,
           createdAt: new Date().toLocaleString(),
         };
