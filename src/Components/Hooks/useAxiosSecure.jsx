@@ -11,7 +11,7 @@ const useAxiosSecure = () => {
   const axiosSecure = axios.create({
     baseURL: `http://localhost:3000`,
     headers: {
-      Authorization: `Bearer ${user?.accessToken || ""}`,
+      Authorization: `Bearer ${user?.accessToken}`,
     },
   });
 
