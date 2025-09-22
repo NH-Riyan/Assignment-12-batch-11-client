@@ -64,6 +64,26 @@ const DashboardLayout = () => {
                 Reports
               </NavLink>
             </li>
+            <li>
+              <NavLink
+                to="/dashboard/manageusers"
+                className={({ isActive }) =>
+                  isActive ? "bg-primary text-white p-2 rounded" : "p-2 rounded"
+                }
+              >
+                Manage Users
+              </NavLink>
+            </li>
+            <li>
+              <NavLink
+                to="/dashboard/banusers"
+                className={({ isActive }) =>
+                  isActive ? "bg-primary text-white p-2 rounded" : "p-2 rounded"
+                }
+              >
+                Ban Users
+              </NavLink>
+            </li>
           </ul>
         </aside>
 

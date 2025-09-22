@@ -14,6 +14,8 @@ import Reports from "../Pages/Reports/Reports";
 import PrivateRoutes from "../Components/PrivateRoutes/PrivateRoutes";
 import Membership from "../Pages/Membership/Membership";
 import Profile from "../Pages/Profile/Profile";
+import BanUsers from "../Pages/Reports/BanUsers/BanUsers";
+import ManageUsers from "../Pages/ManageUsers/ManageUsers";
 
 export const router = createBrowserRouter([
   {
@@ -78,8 +80,16 @@ export const router = createBrowserRouter([
         element: <AddAnnouncements></AddAnnouncements>
       },
       {
+        path:'manageusers',
+        element:<ManageUsers></ManageUsers>
+      },
+      {
         path: 'reports',
         element: <Reports></Reports>
+      },
+      {
+        path: 'banusers',
+        element: <BanUsers></BanUsers>
       }
 
 

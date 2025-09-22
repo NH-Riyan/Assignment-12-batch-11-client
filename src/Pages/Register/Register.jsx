@@ -59,6 +59,7 @@ const Register = () => {
           badge: "bronze",
           role:"user",
           postNumber: 0,
+          warning :0,
           createdAt: new Date().toLocaleString(),
         };
 
