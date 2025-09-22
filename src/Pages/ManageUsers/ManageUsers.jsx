@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import useAxiosSecure from "../../Components/Hooks/useAxiosSecure";
 
@@ -6,28 +6,30 @@ import useAxiosSecure from "../../Components/Hooks/useAxiosSecure";
 const ManageUsers = () => {
     const axiosInstance = useAxiosSecure();
     const queryClient = useQueryClient();
-    const [searchTerm, setSearchTerm] = useState("");
+
 
     // Fetch users with search
-    const { data: users = [], refetch, isLoading } = useQuery({
-        queryKey: ["users", searchTerm],
+    const { data: users = [], isLoading } = useQuery({
+        queryKey: ["users"],
         queryFn: async () => {
             const res = await axiosInstance.get("/users");
             return res.data;
         },
     });
 
-    // Mutation to make admin
-    const makeAdminMutation = useMutation({
+    
+    const rolechangeMutation = useMutation({
         mutationFn: async (id) => {
-            await axiosInstance.patch(`/users/admin/${id}`);
+            const res = await axiosInstance.patch(`/users/changerole/${id}`);
+            return res.data;
         },
         onSuccess: () => {
             queryClient.invalidateQueries(["users"]);
         },
     });
 
-    
+
+
 
     if (isLoading) return <p>Loading users...</p>;
 
@@ -58,11 +60,11 @@ const ManageUsers = () => {
                                 <td className="py-2 px-4">{user.role}</td>
                                 <td className="py-2 px-4">
                                     <button
-                                        onClick={() => makeAdminMutation.mutate(user._id)}
+                                        onClick={() => rolechangeMutation.mutate(user._id)}
                                         className={`px-3 py-1 rounded text-white ${user.role === "admin" ? "bg-red-500 hover:bg-red-600" : "bg-green-500 hover:bg-green-600"
                                             }`}
                                     >
-                                        {user.role === "admin" ? "Make User" : "Make Admin"}
+                                        {user.role === "admin" ? "Remove Admin" : "Make Admin"}
                                     </button>
                                 </td>
 

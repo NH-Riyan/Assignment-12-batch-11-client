@@ -12,7 +12,7 @@ const Banner = () => {
   const { isPending, error, data: results = [] } = useQuery({
     queryKey: ["searchPosts", searchTag],
     queryFn: async () => {
-      const res = await axiosInstance.get(`/api/posts/search?tag=${searchTag}`);
+      const res = await axiosInstance.get(`/posts/search?tag=${searchTag}`);
       return res.data;
     },
     enabled: !!searchTag,

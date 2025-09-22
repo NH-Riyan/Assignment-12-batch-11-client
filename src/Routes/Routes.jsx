@@ -14,8 +14,10 @@ import Reports from "../Pages/Reports/Reports";
 import PrivateRoutes from "../Components/PrivateRoutes/PrivateRoutes";
 import Membership from "../Pages/Membership/Membership";
 import Profile from "../Pages/Profile/Profile";
-import BanUsers from "../Pages/Reports/BanUsers/BanUsers";
+import BanUsers from "../Pages/BanUsers/BanUsers";
 import ManageUsers from "../Pages/ManageUsers/ManageUsers";
+import Forbidden from "../Pages/Forbidden/Forbidden";
+import AdminRoute from "../Components/AdminRoutes/AdminRoutes";
 
 export const router = createBrowserRouter([
   {
@@ -33,7 +35,11 @@ export const router = createBrowserRouter([
       {
         path: '/membership',
         element: <PrivateRoutes><Membership></Membership></PrivateRoutes>
-      }
+      },
+       {
+        path: 'forbidden',
+        element: <Forbidden></Forbidden>
+      },
     ]
   },
   {
@@ -77,19 +83,19 @@ export const router = createBrowserRouter([
       },
       {
         path: 'announcements',
-        element: <AddAnnouncements></AddAnnouncements>
+        element:<AdminRoute><AddAnnouncements></AddAnnouncements></AdminRoute>
       },
       {
         path:'manageusers',
-        element:<ManageUsers></ManageUsers>
+        element:<AdminRoute><ManageUsers></ManageUsers></AdminRoute>
       },
       {
         path: 'reports',
-        element: <Reports></Reports>
+        element:<AdminRoute><Reports></Reports></AdminRoute> 
       },
       {
         path: 'banusers',
-        element: <BanUsers></BanUsers>
+        element:<AdminRoute><BanUsers></BanUsers></AdminRoute>
       }
 
 
