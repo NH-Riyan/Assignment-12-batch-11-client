@@ -42,7 +42,7 @@ const Navbar = () => {
 
   return (
     <div className="navbar bg-base-100 shadow-sm px-4">
-      {/* Left Side: Logo */}
+     
       <div className="navbar-start">
         <p className="text-3xl italic font-bold">
           Civic<span className="text-green-600">Talk</span>
