@@ -19,7 +19,6 @@ const Register = () => {
     createUser(email, password)
       .then(async (result) => {
         const currentUser = result.user;
-        console.log("Firebase user created:", currentUser);
 
         let uploadedImageUrl = "";
 

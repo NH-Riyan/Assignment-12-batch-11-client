@@ -2,11 +2,22 @@ import { NavLink, Outlet } from "react-router";
 import Navbar from "../Components/Navbar/Navbar";
 import Footer from "../Components/Footer/Footer";
 import useUserRole from "../Components/Hooks/useUserRole";
+import { useContext } from "react";
+import { AuthContext } from "../Context/AuthContext";
 
 const DashboardLayout = () => {
   const { role, roleLoading } = useUserRole();
+  const {loading}=useContext(AuthContext)
+  console.log(role)
+
+  if (roleLoading || loading) {
+    return <p>Loading role...</p>;
+  }
+
+
   return (
     <div className="min-h-screen flex flex-col">
+
 
       <Navbar />
 
@@ -15,6 +26,7 @@ const DashboardLayout = () => {
         <aside className="w-64 bg-base-300 p-5 ">
           <h2 className="text-2xl font-bold mb-6">Dashboard</h2>
           <ul className="menu space-y-2">
+
             <li>
               <NavLink
                 to="/dashboard/profile"
@@ -25,9 +37,8 @@ const DashboardLayout = () => {
                 My Profile
               </NavLink>
             </li>
-            {!roleLoading && role === 'user' &&
+            { !roleLoading && role !== 'admin' &&
               <>
-
                 <li>
                   <NavLink
                     to="/dashboard/addpost"

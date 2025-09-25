@@ -1,11 +1,11 @@
 import { useState, useContext } from "react";
 import { toast } from "react-toastify";
-import useAxios from "../../Components/Hooks/useAxios";
 import { AuthContext } from "../../Context/AuthContext";
+import useAxiosSecure from "../../Components/Hooks/useAxiosSecure";
 
 
 const AddAnnouncements = () => {
-  const axiosInstance = useAxios();
+  const axiosInstance = useAxiosSecure();
   const { user } = useContext(AuthContext);
 
   const [title, setTitle] = useState("");

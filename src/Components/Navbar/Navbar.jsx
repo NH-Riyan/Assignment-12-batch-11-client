@@ -41,7 +41,7 @@ const Navbar = () => {
   );
 
   return (
-    <div className="navbar bg-base-100 shadow-sm px-4">
+    <div className="navbar mb-7 bg-base-100 shadow-sm px-4">
      
       <div className="navbar-start">
         <p className="text-3xl italic font-bold">

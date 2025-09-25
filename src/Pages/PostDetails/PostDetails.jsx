@@ -52,13 +52,11 @@ const PostDetails = () => {
             const res = await axiosInstance.post(`/posts/${id}/upvote`, {
                 userEmail: user.email,
             });
-            console.log("Upvote response:", res.data);
             queryClient.invalidateQueries({ queryKey: ["post", id] })
     };
 
     const handleDownVote = async () => {
         const res = await axiosInstance.post(`/posts/${id}/downvote`, { userEmail: user.email });
-        console.log("downvote response:", res.data);
         queryClient.invalidateQueries({ queryKey: ["post", id] });
     };
 

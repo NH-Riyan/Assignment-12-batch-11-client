@@ -16,7 +16,6 @@ const Login = () => {
         const { email, password } = data;
         try {
             const result = await signIn(email, password);
-            console.log("Logged in user:", result.user);
             toast.success(" Login successful!");
             setTimeout(() => {
                 navigate(`${location.state ? location.state : "/"}`)

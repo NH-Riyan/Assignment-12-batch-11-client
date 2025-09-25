@@ -21,11 +21,9 @@ const Reports = () => {
         mutationFn: async (report) => {
         
             await axiosInstance.put(`/reports/solve/${report._id}`);
-            // Increment user's warning
             await axiosInstance.put(`/users/incrementWarning/${report.commenterEmail}`);
         },
         onMutate: async (report) => {
-            // Optimistic update: immediately mark report as solved
             await queryClient.cancelQueries(["reports"]);
 
             const previousReports = queryClient.getQueryData(["reports"]);
@@ -40,7 +38,6 @@ const Reports = () => {
         },
         onError: (err, report, context) => {
             toast.error("Failed to give warning!");
-            // Rollback if mutation failed
             queryClient.setQueryData(["reports"], context.previousReports);
         },
         onSuccess: () => {

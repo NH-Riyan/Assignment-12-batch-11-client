@@ -1,31 +1,33 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { FiSearch } from "react-icons/fi";
-import { Link } from "react-router";
-import useAxios from "../Hooks/useAxios";
+import { data, Link } from "react-router";
+import useAxiosSecure from "../Hooks/useAxiosSecure";
+import { AuthContext } from "../../Context/AuthContext";
 
 const Banner = () => {
   const [query, setQuery] = useState("");
   const [searchTag, setSearchTag] = useState("");
-  const axiosInstance = useAxios();
+  const axiosInstance = useAxiosSecure();
+  const{user}=useContext(AuthContext)
 
   const { isPending, error, data: results = [] } = useQuery({
     queryKey: ["searchPosts", searchTag],
     queryFn: async () => {
-      const res = await axiosInstance.get(`/posts/search?tag=${searchTag}`);
+      const res = await axiosInstance.get(`/post/search/${searchTag}`);
       return res.data;
     },
-    enabled: !!searchTag,
+    enabled: !!searchTag && !!user,
   });
 
   const handleSearch = (e) => {
     e.preventDefault();
     setSearchTag(query.trim());
   };
-
+ 
   return (
-    <section className="bg-gradient-to-r from-green-50 via-green-100 to-green-50 py-16 px-6 text-center">
-      {/* Title */}
+    <section className="bg-gradient-to-r my-12 from-green-50 via-green-100 to-green-50 py-16 px-6 text-center">
+     
       <h1 className="text-4xl lg:text-5xl font-extrabold mb-4 text-gray-800">
         Welcome to{" "}
         <span className="text-green-600 italic drop-shadow-sm">CivicTalk</span>
@@ -35,7 +37,6 @@ const Banner = () => {
         exploring by searching with tags below!
       </p>
 
-      {/* Search Bar */}
       <form
         onSubmit={handleSearch}
         className="flex justify-center items-center gap-2 max-w-xl mx-auto"
@@ -56,7 +57,7 @@ const Banner = () => {
         </button>
       </form>
 
-      {/* Search Results */}
+   
       <div className="p-6 max-w-4xl mx-auto mt-10">
         {error && (
           <p className="text-center text-red-500 font-medium">
@@ -75,7 +76,7 @@ const Banner = () => {
                 className="border border-gray-200 p-6 rounded-xl shadow-sm hover:shadow-lg bg-white text-left transition duration-200"
               >
                 <Link to={`/posts/${post._id}`}>
-                  {/* Author Info Above Title */}
+                  
                   <div className="flex items-center gap-3 mb-3">
                     <img
                       src={post.authorImage}
@@ -87,17 +88,17 @@ const Banner = () => {
                     </span>
                   </div>
 
-                  {/* Title */}
+                  
                   <h2 className="text-2xl font-semibold mb-3 text-gray-800 hover:text-green-600 transition">
                     {post.title}
                   </h2>
 
-                  {/* Description */}
+                  
                   <p className="text-gray-600 mb-3">
                     {post.description?.substring(0, 120)}...
                   </p>
 
-                  {/* Tag */}
+                
                   <p className="text-sm font-medium text-green-700">
                     🏷️ Tag:{" "}
                     <span className="bg-green-100 px-2 py-1 rounded-md text-green-800">

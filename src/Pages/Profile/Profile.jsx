@@ -18,7 +18,7 @@ const Profile = () => {
 
     });
 
-    // Fetch user posts
+
     const { data: posts = [] } = useQuery({
         queryKey: ["userPosts", user?.email],
         queryFn: async () => {
@@ -28,56 +28,53 @@ const Profile = () => {
 
     });
 
-    console.log(posts)
+  
 
     return (
         <section className="max-w-4xl mx-auto p-6">
             <h1 className="text-3xl font-bold mb-6">My Profile</h1>
 
-            {/* Profile Info */}
-            {profile ? (
-                <div className="bg-white shadow-md rounded-xl p-6 flex flex-col sm:flex-row items-center sm:items-start gap-6 max-w-3xl mx-auto transition-shadow hover:shadow-lg">
 
-                    {/* Avatar */}
+            {profile ? (
+                <div className="bg-gradient-to-r from-green-50 via-green-100 to-green-50 shadow-lg rounded-2xl p-6 flex flex-col sm:flex-row items-center sm:items-start gap-6 max-w-3xl mx-auto transition-all duration-300 hover:shadow-2xl transform hover:-translate-y-1">
+
+                  
                     <div className="flex-shrink-0">
                         <img
                             src={profile.photoURL || "/default-avatar.png"}
                             alt={profile.name || "User"}
-                            className="w-28 h-28 rounded-full border-2 border-green-500 object-contain"
+                            className="w-32 h-32 rounded-full border-4 border-green-500 object-cover shadow-md transition-transform duration-300 hover:scale-105"
                         />
                     </div>
 
-                    {/* Profile Details */}
-                    <div className="flex-1 text-center sm:text-left space-y-3">
-                        {/* Name & Email */}
+                
+                    <div className="flex-1 text-center sm:text-left space-y-4">
                         <div>
-                            <h2 className="text-2xl font-semibold text-gray-900">{profile.name}</h2>
+                            <h2 className="text-3xl font-bold text-gray-900">{profile.name}</h2>
                             <p className="text-gray-600 mt-1">{profile.email}</p>
                         </div>
 
-                        {/* Badges and Warnings */}
-                        <div className="flex flex-wrap justify-center sm:justify-start items-center gap-2">
-                            <span className="px-4 py-1 bg-yellow-100 text-yellow-800 rounded-full text-sm font-medium tracking-wide">
+                        <div className="flex flex-wrap justify-center sm:justify-start items-center gap-3">
+                            <span className="px-5 py-2 bg-yellow-200 text-yellow-900 rounded-full text-sm font-semibold tracking-wide shadow-md hover:bg-yellow-300 transition">
                                 🏅 {profile.badge || "bronze"}
                             </span>
-                            <span className="px-4 py-1 bg-gray-100 text-gray-700 rounded-full text-sm font-medium tracking-wide">
+                            <span className="px-5 py-2 bg-red-100 text-red-700 rounded-full text-sm font-semibold tracking-wide shadow-md hover:bg-red-200 transition">
                                 ⚠️ Warnings: {profile.warning || 0}
                             </span>
                         </div>
 
-                       
-                            <p className="text-red-700 font-semibold bg-red-100 p-3 rounded-lg border border-red-300 shadow-md max-w-md mx-auto text-center">
-                                ⚠️ If you get 5 warnings, you will be banned forever
-                            </p>
-                    
+                        <p className="text-red-700 font-semibold bg-red-50 p-4 rounded-xl border border-red-300 shadow-inner text-center text-sm sm:text-base animate-pulse">
+                            ⚠️ If you get 5 warnings, you will be banned forever
+                        </p>
                     </div>
 
                 </div>
+
             ) : (
                 <p className="text-center mt-10 text-gray-500 font-medium">Loading profile...</p>
             )}
 
-            {/* Recent Posts */}
+       
             <div className="mt-10">
                 <h3 className="text-xl font-semibold mb-4">My Recent Posts</h3>
                 {posts ? (

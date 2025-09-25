@@ -30,10 +30,8 @@ const PaymentForm = () => {
         }
         else {
             setError('');
-            console.log('payment method', paymentMethod);
 
             const res = await axiosSecure.post('/create-payment-intent')
-            console.log(res)
 
             const clientSecret = res.data.clientSecret;
 

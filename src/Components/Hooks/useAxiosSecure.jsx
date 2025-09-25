@@ -2,18 +2,20 @@ import axios from "axios";
 import { useContext } from "react";
 import { useNavigate } from "react-router";
 import { AuthContext } from "../../Context/AuthContext";
-
+const axiosSecure = axios.create({
+    baseURL: `http://localhost:3000`,
+  });
 
 const useAxiosSecure = () => {
   const { user, logOut } = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const axiosSecure = axios.create({
-    baseURL: `http://localhost:3000`,
-    headers: {
-      Authorization: `Bearer ${user?.accessToken}`,
-    },
-  });
+  axiosSecure.interceptors.request.use(config => {
+    config.headers.Authorization = `Bearer ${user?.accessToken}`
+    return config;
+  }, error => {
+    return Promise.reject(error);
+  })
 
   axiosSecure.interceptors.response.use(res => {
     return res;

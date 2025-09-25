@@ -4,7 +4,7 @@ const Tags = () => {
   const tags = ["Technology", "Politics", "Education", "Sports", "General"];
 
   return (
-    <div className="p-6 bg-gray-50 ">
+    <div className="p-6 my-6 rounded-2xl bg-gray-50 ">
       <h2 className="text-2xl font-bold mb-6 text-gray-800">Tags You can search for </h2>
 
       <div className="flex flex-wrap gap-4">

@@ -8,9 +8,13 @@ const PrivateRoutes = ({ children }) => {
     const { user, loading } = useContext(AuthContext)
     const location = useLocation()
 
-    if (loading)
-    {
-        return <span className="loading loading-infinity loading-xl"></span>
+    if (loading) {
+        return (
+            <div className="flex h-screen items-center justify-center">
+                <span className="loading loading-infinity loading-xl"></span>
+            </div>
+        );
+
     }
     if (user)
         return children;

@@ -2,32 +2,37 @@ import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 //import { useNavigate } from "react-router";
 import { AuthContext } from "../../Context/AuthContext";
-import { toast } from "react-toastify";
 import Select from "react-select";
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../Components/Hooks/useAxiosSecure";
+import Swal from "sweetalert2";
+import { useNavigate } from "react-router";
 
 const AddPost = () => {
     const { register, handleSubmit, reset } = useForm();
     const { user } = useContext(AuthContext);
     const axiosInstance = useAxiosSecure();
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     const [selectedTag, setSelectedTag] = useState(null);
 
 
-    const { data: postCountData, isLoading } = useQuery({
-        queryKey: ["postCount", user?.email],
+    const { data: userData, isLoading } = useQuery({
+        queryKey: ["userData", user?.email],
         queryFn: async () => {
-            if (!user?.email) return { count: 0 };
-            const res = await axiosInstance.get(`/users/postNumber/${user.email}`);
-            console.log("User's post count:", res.data.postNumber);
-            return { count: res.data.postNumber || 0 }; // return the count
+            if (!user?.email) return null;
+            const res = await axiosInstance.get(`/user/${user.email}`);
+            return res.data; // Return the whole user object
         },
         enabled: !!user?.email,
     });
 
-    const postCount = postCountData?.count || 0;
+    if (isLoading) {
+        return <p>Loading user...</p>;
+    }
+
+
+    const postCount = userData. postNumber || 0;
 
 
     const onSubmit = async (data) => {
@@ -40,21 +45,37 @@ const AddPost = () => {
             tag: selectedTag?.value || "general",
             upVote: 0,
             downVote: 0,
-            Comment: [ ],
-            like:[],
-            dislike:[],
+            Comment: [],
+            like: [],
+            dislike: [],
             createdAt: new Date().toISOString(),
         };
 
+
+
         try {
             await axiosInstance.post("/posts", newPost);
-            toast.success("✅ Post added successfully!");
+
+            Swal.fire({
+                icon: "success",
+                title: "Post added successfully!",
+                showConfirmButton: true,
+                confirmButtonText: "OK"
+            });
+
             reset();
-            // navigate("/posts");
         } catch (err) {
             console.error("Error adding post:", err);
-            toast.error("❌ Failed to add post!");
+
+            Swal.fire({
+                icon: "error",
+                title: "Failed to add post!",
+                text: err.response?.data?.message || "Something went wrong.",
+                showConfirmButton: true,
+                confirmButtonText: "OK"
+            });
         }
+
     };
 
 
@@ -75,15 +96,15 @@ const AddPost = () => {
     }
 
     return (
-        <div className="flex justify-center items-center min-h-screen bg-green-50">
-            {postCount >= 5 ? (
+        <div className="flex justify-center rounded-lg py-7 items-center min-h-screen bg-green-50">
+            {postCount >= 5 && userData.badge === "bronze" ? (
 
                 <div className="text-center">
                     <h2 className="text-xl font-bold text-red-500 mb-4">
                         You have reached the limit of 5 posts.
                     </h2>
                     <button
-                        //onClick={() => navigate("/membership")}
+                        onClick={() => navigate("/membership")}
                         className="btn btn-primary"
                     >
                         Become a Member
