@@ -17,7 +17,7 @@ const Banner = () => {
       const res = await axiosInstance.get(`/post/search/${searchTag}`);
       return res.data;
     },
-    enabled: !!searchTag && !!user,
+    enabled: !!searchTag ,
   });
 
   const handleSearch = (e) => {

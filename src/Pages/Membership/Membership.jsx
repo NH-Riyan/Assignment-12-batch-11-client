@@ -6,7 +6,7 @@ import { AuthContext } from '../../Context/AuthContext';
 import useAxiosSecure from '../../Components/Hooks/useAxiosSecure';
 
 const Membership = () => {
-    const { user } = useContext(AuthContext);
+    const { user,loading } = useContext(AuthContext);
     const axiosSecure = useAxiosSecure();
 
     const { data: userData, isLoading } = useQuery({
@@ -18,7 +18,7 @@ const Membership = () => {
         enabled: !!user?.email,
     });
 
-    if (isLoading) {
+    if (isLoading || loading) {
         return (
             <div className="flex items-center justify-center h-screen">
                 <p className="text-gray-600 text-xl">Loading...</p>
